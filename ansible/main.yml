@@ -134,3 +134,10 @@
       when: (item.item.value.remove == False)
       register: wg_user_profile  
       notify: restart wg0
+
+    - name: Fetch Wireguard user configs
+      fetch:
+        src: "{{ wg_conf_dir.path }}/{{ item.item.item.value.username }}/wg0.conf"
+        dest: "{{ wg_download_path }}"
+      loop: "{{ wg_user_profile.results }}"
+      when: (item.item.item.value.remove == False)
