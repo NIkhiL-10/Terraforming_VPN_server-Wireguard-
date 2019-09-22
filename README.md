@@ -18,7 +18,7 @@ Step:2 (Start Wireguard server)
 
 Add client details:
 
-Open "Terraforming_VPN_server-Wireguard/ansible/vars/main.yml" and paste below dictionary.
+Open "Terraforming_VPN_server-Wireguard/ansible/vars/main.yml" and paste below list.
 
     wg_user_list:
       user_1: { username: "user_1", private_ip: "10.0.0.11", default_route: yes, wg_dns_enabled: yes, remove: no }
