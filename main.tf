@@ -52,4 +52,22 @@ resource "aws_instance" "wireguard" {
     private_key = "${file(var.private_key)}"
     user        = "${var.ansible_user}"
   }
+
+  provisioner "local-exec" {
+    command = <<EOT
+      sleep 30;
+        >wireguard.ini
+	    echo "[wireguard]" | tee -a wireguard.ini;
+	    echo ${aws_instance.wireguard.public_ip} ansible_user=${var.ansible_user} ansible_ssh_private_key_file=${var.private_key} | tee -a wireguard.ini;
+      export ANSIBLE_HOST_KEY_CHECKING=False;
+	    ansible-playbook -u ${var.ansible_user} --private-key ${var.private_key} -i wireguard.ini -e @ansible/defaults/main.yml -e @ansible/vars/main.yml ansible/main.yml
+    EOT
+  }
+
+  tags = {
+    Purpose = "wireguard"
+  }
+
 }
+
+
